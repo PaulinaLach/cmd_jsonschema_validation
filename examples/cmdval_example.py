@@ -38,9 +38,9 @@ The same result could be created with the cli:
 """
 
 import json
-import os
 
 import doschema.validation as dv
+
 
 paths_list = ['file1.json', 'file2.json']
 
@@ -49,5 +49,3 @@ for path in paths_list:
     with open(path, 'r', encoding='utf-8') as infile:
         schema = json.load(infile)
         schema_validator.validate(schema, path)
-        
-

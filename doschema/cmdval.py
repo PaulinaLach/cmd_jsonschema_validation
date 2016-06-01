@@ -25,8 +25,11 @@
 """CLI commands."""
 
 import json
+
 import click
+
 import doschema.validation as dv
+
 
 @click.group()
 def cli():
@@ -37,7 +40,6 @@ def cli():
 @cli.command()
 @click.argument('paths_list', nargs=-1)
 #@click.option('--ignore_index', default=True, help='Foo', type=click.BOOL)
-              
 def validate(paths_list):
     schema_validator = dv.JSONSchemaValidator()
     print('starting')
