@@ -85,6 +85,9 @@ setup(
     include_package_data=True,
     platforms='any',
     entry_points={
+        'console_scripts': [
+            'doschema = doschema.cmdval:cli',
+        ],
     },
     extras_require=extras_require,
     install_requires=install_requires,
