@@ -39,13 +39,11 @@ def cli():
 
 @cli.command()
 @click.argument('paths_list', nargs=-1)
-#@click.option('--ignore_index', default=True, help='Foo', type=click.BOOL)
-def validate(paths_list):
-    schema_validator = dv.JSONSchemaValidator()
-    print('starting')
+@click.option('--ignoring_indexes/--no_ignoring_indexes', default=True, help='Disable ignoring array indexes')
+def validate(paths_list, ignoring_indexes):
+    """Main function for cli."""
+    schema_validator = dv.JSONSchemaValidator(ignoring_indexes)
     for path in paths_list:
-        print(path)
         with open(path, 'r', encoding='utf-8') as infile:
-            print('parsing json')
             schema = json.load(infile)
             schema_validator.validate(schema, path)

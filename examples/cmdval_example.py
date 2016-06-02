@@ -23,24 +23,19 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
 
-"""Minimal Flask application example for development.
-Run this example:
+"""Run this example:
 .. code-block:: console
     $ cd examples
     $ python app.py
 The same result could be created with the cli:
 .. code-block:: console
-    $ cd examples
-    $ mkdir generated
-    $ domapping schema_to_mapping schema.json --config config.json | \
-        domapping mapping_to_jinja > generated/generated_schema.json
-    $ domapping jinja_to_mapping template.json --context_path generated
+    $ doschema file1.json file2.json
 """
 
 import json
+import os
 
 import doschema.validation as dv
-
 
 paths_list = ['file1.json', 'file2.json']
 

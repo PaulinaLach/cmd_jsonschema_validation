@@ -25,31 +25,28 @@
 import os
 
 from click.testing import CliRunner
+
 from doschema.cmdval import validate
 
 
-def test_cli():
-    """Test add action role in access CLI."""
+def test_repetition():
+    """Test that adding field with the same type returns
+    with zero exit code."""
     runner = CliRunner()
     files = ['jsonschema_f1.json', 'jsonschema_f2.json']
     current_dir = os.getcwd()
-    print('1')
 
     def data_path(filename):
         return os.path.join(current_dir, 'tests', 'data_files', filename)
 
-    print('2')
-    print([data_path(filename) for filename in files])
     result = runner.invoke(
         validate, [data_path(filename) for filename in files])
-    print('3')
-    print(result.exit_code)
-    assert result.exit_code != 0
-    print('4')
+    assert result.exit_code == 0
 
 
-def test_cli_exception():
-    """Test add action role in access CLI."""
+def test_difference():
+    """Test that adding field with different type returns
+    with non-zero exit code."""
     runner = CliRunner()
     files = ['jsonschema_f2.json', 'jsonschema_f3.json']
     current_dir = os.getcwd()
@@ -57,8 +54,47 @@ def test_cli_exception():
     def data_path(filename):
         return os.path.join(current_dir, 'tests', 'data_files', filename)
 
-    print([data_path(filename) for filename in files])
     result = runner.invoke(
         validate, [data_path(filename) for filename in files])
-    print(result.exit_code)
+    assert result.exit_code != 0
+
+
+def test_ref():
+    """Test that references works."""
+    runner = CliRunner()
+    files = ['jsonschema_f4.json', 'jsonschema_f5.json']
+    current_dir = os.getcwd()
+
+    def data_path(filename):
+        return os.path.join(current_dir, 'tests', 'data_files', filename)
+
+    result = runner.invoke(
+        validate, [data_path(filename) for filename in files])
+    assert result.exit_code != 0
+
+
+def test_ignoring_indexes():
+    """Test that references works."""
+    runner = CliRunner()
+    files = ['jsonschema_f6.json']
+    current_dir = os.getcwd()
+
+    def data_path(filename):
+        return os.path.join(current_dir, 'tests', 'data_files', filename)
+
+    result = runner.invoke(
+        validate, [data_path(filename) for filename in files])
+    assert result.exit_code != 0
+
+
+def test_not_ignoring_indexes():
+    """Test that references works."""
+    runner = CliRunner()
+    current_dir = os.getcwd()
+
+    def data_path(filename):
+        return os.path.join(current_dir, 'tests', 'data_files', filename)
+
+    result = runner.invoke(
+        validate, [data_path('jsonschema_f6.json'), '--no_ignoring_indexes'])
     assert result.exit_code == 0
