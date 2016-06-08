@@ -32,6 +32,7 @@ import chardet
 import click
 
 import doschema.validation
+from doschema.errors import EncodingError
 
 
 @click.group()
@@ -57,9 +58,13 @@ def validate(schemas, ignore_index):
         with open(path, 'rb') as infile:
             byte_file = infile.read()
             encoding = chardet.detect(byte_file)['encoding']
-            string_file = byte_file.decode(encoding)
-            schema = json.loads(
-                string_file,
-                encoding=encoding
-            )
-            schema_validator.validate(schema, path)
+            if encoding == 'UTF-16BE' or 'UTF-16LE':
+                encoding = 'UTF-16'
+            elif encoding == 'UTF-32BE' or 'UTF-32LE':
+                encoding = 'UTF-32'
+            if encoding == 'UTF-8' or 'UTF-16'or 'UTF-32':
+                string_file = byte_file.decode(encoding)
+                schema = json.loads(string_file)
+                schema_validator.validate(schema, path)
+            else:
+                raise EncodingError()
